@@ -63,7 +63,7 @@ ChatBot::ChatBot(ChatBot &source) {
 }
 
 // copy assignment operator
-ChatBot &operator=(ChatBot &source) {
+ChatBot& ChatBot::operator=(ChatBot &source) {
     std::cout << "ChatBot Copy Operator" << std::endl;
 
     // identity check to avoid self-assignment
@@ -102,7 +102,7 @@ ChatBot::ChatBot(ChatBot &&source) {
 }
 
 // move assignment operator
-ChatBot::ChatBot &operator=(ChatBot &&source) {
+ChatBot& ChatBot::operator=(ChatBot &&source) {
     std::cout << "ChatBot Move Operator" << std::endl;
 
     // identity check to avoid self-assignment
