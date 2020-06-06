@@ -46,27 +46,81 @@ ChatBot::~ChatBot()
 ////
 
 // copy constructor
-ChatBot::ChatBot(const ChatBot &source) {
+ChatBot::ChatBot(ChatBot &source) {
     std::cout << "ChatBot Copy Constructor" << std::endl;
 
+    // transfer ownership (handles)
+    this->_image = source._image;
+    this->_chatLogic = source._chatLogic;
+    this->_rootNode = source._rootNode;
+    this->_currentNode = source._currentNode;
     
+    // invalidate the source object
+    source._image = NULL;
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._currentNode = nullptr;
 }
 
 // copy assignment operator
-ChatBot::ChatBot &operator=(const ChatBot &source) {
+ChatBot &operator=(ChatBot &source) {
     std::cout << "ChatBot Copy Operator" << std::endl;
 
+    // identity check to avoid self-assignment
+    if (this == &source) return *this;
+
+    // transfer ownership (handles)
+    this->_image = source._image;
+    this->_chatLogic = source._chatLogic;
+    this->_rootNode = source._rootNode;
+    this->_currentNode = source._currentNode;
+
+    // invalidate the source object
+    source._image = NULL;
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._currentNode = nullptr;
+
+    return *this;
 }
 
 // move constructor
-ChatBot::ChatBot(const ChatBot &&source) {
+ChatBot::ChatBot(ChatBot &&source) {
     std::cout << "ChatBot Move Constructor" << std::endl;
 
+    // transfer ownership (handles)
+    this->_image = source._image;
+    this->_chatLogic = source._chatLogic;
+    this->_rootNode = source._rootNode;
+    this->_currentNode = source._currentNode;
+
+    // invalidate the source object
+    source._image = NULL;
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._currentNode = nullptr;
 }
 
 // move assignment operator
-ChatBot::ChatBot &operator=(const ChatBot &&source) {
+ChatBot::ChatBot &operator=(ChatBot &&source) {
     std::cout << "ChatBot Move Operator" << std::endl;
+
+    // identity check to avoid self-assignment
+    if (this == &source) return *this;
+
+    // transfer ownership (handles)
+    this->_image = source._image;
+    this->_chatLogic = source._chatLogic;
+    this->_rootNode = source._rootNode;
+    this->_currentNode = source._currentNode;
+
+    // invalidate the source object
+    source._image = NULL;
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._currentNode = nullptr;
+
+    return *this;
 }
 
 ////
