@@ -46,18 +46,24 @@ ChatBot::~ChatBot()
 ////
 
 // copy constructor
-ChatBot::ChatBot(const ChatBot &source) {
+ChatBot::ChatBot(ChatBot &source) {
     std::cout << "ChatBot Copy Constructor" << std::endl;
 
     // deep copy
-    _image = new wxBitmap(*source._image);
+    // _image = new wxBitmap(*source._image);
+    _image = source._image;
     _chatLogic = source._chatLogic;
     _chatLogic->SetChatbotHandle(this);
     _rootNode = source._rootNode;
+
+    // invalidate the source object
+    source._image = NULL;
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
 }
 
 // copy assignment operator
-ChatBot& ChatBot::operator=(const ChatBot &source) {
+ChatBot& ChatBot::operator=(ChatBot &source) {
     std::cout << "ChatBot Copy Assignment Operator" << std::endl;
 
     // identity check to avoid self-assignment
@@ -65,10 +71,16 @@ ChatBot& ChatBot::operator=(const ChatBot &source) {
 
     // deep copy
     delete _image;
-    _image = new wxBitmap(*source._image);
+    // _image = new wxBitmap(*source._image);
+    _image = source._image;
     _chatLogic = source._chatLogic;
     _chatLogic->SetChatbotHandle(this);
     _rootNode = source._rootNode;
+
+    // invalidate the source object
+    source._image = NULL;
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
 
     return *this;
 }
