@@ -232,7 +232,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     }
 
     // create a ChatBot instance
-    ChatBot chatBot("../images/chatbot.png");
+    ChatBot chatBot = ChatBot("../images/chatbot.png");
 
     // pass the handle to member _chatBot
     SetChatbotHandle(&chatBot);
