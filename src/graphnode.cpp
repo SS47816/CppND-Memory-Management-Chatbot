@@ -44,15 +44,13 @@ void GraphNode::MoveChatbotHere(ChatBot chatbot)
 // void GraphNode::MoveChatbotHere(ChatBot *chatbot)
 {
     _chatBot = std::move(chatbot);
-    std::cout << "chatBot move semantic" << std::endl;
     // _chatBot = chatbot;
     _chatBot.SetCurrentNode(this);
-    std::cout << "chatBot set current node" << std::endl;
 }
 
 void GraphNode::MoveChatbotToNewNode(GraphNode *newNode)
 {
-    newNode->MoveChatbotHere(_chatBot);
+    newNode->MoveChatbotHere(std::move(_chatBot));
     // _chatBot = nullptr; // invalidate pointer at source
 }
 ////
