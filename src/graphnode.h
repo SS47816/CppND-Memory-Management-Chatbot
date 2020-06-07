@@ -18,7 +18,7 @@ private:
     ////
 
     // data handles (owned)
-    std::vector<std::unique_ptr<GraphEdge>> _childEdges;    // edges to subsequent nodes
+    std::vector<std::shared_ptr<GraphEdge>> _childEdges;    // edges to subsequent nodes
     // std::vector<GraphEdge *> _childEdges;  // edges to subsequent nodes
 
     // data handles (not owned)
@@ -48,7 +48,8 @@ public:
     // proprietary functions
     void AddToken(std::string token); // add answers to list
     void AddEdgeToParentNode(GraphEdge *edge);
-    void AddEdgeToChildNode(GraphEdge *edge);
+    void AddEdgeToChildNode(std::shared_ptr<GraphEdge> edge);
+    // void AddEdgeToChildNode(GraphEdge *edge);
 
     //// STUDENT CODE
     ////
