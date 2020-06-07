@@ -165,7 +165,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             // auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](GraphNode *node) { return node->GetID() == std::stoi(childToken->second); });
 
                             // create new edge
-                            auto edge = std::make_shared<GraphEdge>(id);
+                            auto edge = std::make_unique<GraphEdge>(id);
                             edge->SetChildNode(childNode->get());
                             edge->SetParentNode(parentNode->get());
                             // _edges.push_back(edge);
@@ -181,7 +181,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
                             // store reference in child node and parent node
                             (*childNode)->AddEdgeToParentNode(edge.get());
-                            (*parentNode)->AddEdgeToChildNode(edge);
+                            (*parentNode)->AddEdgeToChildNode(std::move(edge));
                             // (*childNode)->AddEdgeToParentNode(edge);
                             // (*parentNode)->AddEdgeToChildNode(edge);
                         }
@@ -232,17 +232,31 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     }
 
     // create a ChatBot instance
-    auto chatBot = std::make_shared<ChatBot>("../images/chatbot.png");
-    chatBot->SetChatLogicHandle(this);
+    ChatBot chatBot("../images/chatbot.png");
+    std::cout << "chatBot instance created" << std::endl;
+
+    // pass the handle to member _chatBot
+    SetChatbotHandle(&chatBot);
+    std::cout << "chatBot passed handle to local member" << std::endl;
+    _chatBot->SetChatLogicHandle(this);
+    std::cout << "chatBot set handle" << std::endl;
 
     // add chatbot to graph root node
-    chatBot->SetRootNode(rootNode.get());
-    rootNode->MoveChatbotHere(chatBot);
+    _chatBot->SetRootNode(rootNode.get());
+    std::cout << "chatBot set Root Node" << std::endl;
+    rootNode->MoveChatbotHere(std::move(chatBot));
+    std::cout << "chatBot moved to Root Node" << std::endl;
     // _chatBot->SetRootNode(rootNode);
     // rootNode->MoveChatbotHere(_chatBot);
     
-    // pass the handle to member _chatBot
-    _chatBot = chatBot.get();
+    // //local chatBot
+    // ChatBot chatBot("../images/chatbot.png");
+    // this->SetChatbotHandle(&chatBot);
+    // //_chatBot = &chatBot;
+    // // add chatbot to graph root node
+    // chatBot.SetRootNode(rootNode);
+    // chatBot.SetChatLogicHandle(this);
+    // rootNode->MoveChatbotHere(std::move(chatBot));
 
     ////
     //// EOF STUDENT CODE

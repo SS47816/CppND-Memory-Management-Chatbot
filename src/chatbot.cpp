@@ -46,40 +46,31 @@ ChatBot::~ChatBot()
 ////
 
 // copy constructor
-ChatBot::ChatBot(ChatBot &source) {
+ChatBot::ChatBot(const ChatBot &source) {
     std::cout << "ChatBot Copy Constructor" << std::endl;
 
-    // transfer ownership (handles)
-    this->_image = source._image;
-    this->_chatLogic = source._chatLogic;
-    this->_rootNode = source._rootNode;
-    this->_currentNode = source._currentNode;
-    
-    // invalidate the source object
-    source._image = NULL;
-    source._chatLogic = nullptr;
-    source._rootNode = nullptr;
-    source._currentNode = nullptr;
+    // shared ownership (deep copy)
+    _image = new wxBitmap(*source._image);
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
 }
 
 // copy assignment operator
-ChatBot& ChatBot::operator=(ChatBot &source) {
+ChatBot& ChatBot::operator=(const ChatBot &source) {
     std::cout << "ChatBot Copy Assignment Operator" << std::endl;
 
     // identity check to avoid self-assignment
     if (this == &source) return *this;
 
-    // transfer ownership (handles)
-    this->_image = source._image;
-    this->_chatLogic = source._chatLogic;
-    this->_rootNode = source._rootNode;
-    this->_currentNode = source._currentNode;
-
-    // invalidate the source object
-    source._image = NULL;
-    source._chatLogic = nullptr;
-    source._rootNode = nullptr;
-    source._currentNode = nullptr;
+    // transfer contents
+    delete _image;
+    _image = new wxBitmap(*source._image);
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
 
     return *this;
 }
@@ -89,10 +80,11 @@ ChatBot::ChatBot(ChatBot &&source) {
     std::cout << "ChatBot Move Constructor" << std::endl;
 
     // transfer ownership (handles)
-    this->_image = source._image;
-    this->_chatLogic = source._chatLogic;
-    this->_rootNode = source._rootNode;
-    this->_currentNode = source._currentNode;
+    _image = source._image;
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
 
     // invalidate the source object
     source._image = NULL;
@@ -109,10 +101,12 @@ ChatBot& ChatBot::operator=(ChatBot &&source) {
     if (this == &source) return *this;
 
     // transfer ownership (handles)
-    this->_image = source._image;
-    this->_chatLogic = source._chatLogic;
-    this->_rootNode = source._rootNode;
-    this->_currentNode = source._currentNode;
+    delete _image;
+    _image = source._image;
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
 
     // invalidate the source object
     source._image = NULL;

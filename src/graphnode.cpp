@@ -1,6 +1,8 @@
 #include "graphedge.h"
 #include "graphnode.h"
 
+#include <iostream>
+
 GraphNode::GraphNode(int id)
 {
     _id = id;
@@ -27,7 +29,7 @@ void GraphNode::AddEdgeToParentNode(GraphEdge *edge)
     _parentEdges.push_back(edge);
 }
 
-void GraphNode::AddEdgeToChildNode(std::shared_ptr<GraphEdge> edge)
+void GraphNode::AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge)
 // void GraphNode::AddEdgeToChildNode(GraphEdge *edge)
 {
     _childEdges.emplace_back(std::move(edge));
@@ -38,18 +40,20 @@ void GraphNode::AddEdgeToChildNode(std::shared_ptr<GraphEdge> edge)
 //// STUDENT CODE
 ////
 
-void GraphNode::MoveChatbotHere(std::shared_ptr<ChatBot> chatbot)
+void GraphNode::MoveChatbotHere(ChatBot chatbot)
 // void GraphNode::MoveChatbotHere(ChatBot *chatbot)
 {
     _chatBot = std::move(chatbot);
+    std::cout << "chatBot move semantic" << std::endl;
     // _chatBot = chatbot;
-    _chatBot->SetCurrentNode(this);
+    _chatBot.SetCurrentNode(this);
+    std::cout << "chatBot set current node" << std::endl;
 }
 
 void GraphNode::MoveChatbotToNewNode(GraphNode *newNode)
 {
     newNode->MoveChatbotHere(_chatBot);
-    _chatBot = nullptr; // invalidate pointer at source
+    // _chatBot = nullptr; // invalidate pointer at source
 }
 ////
 //// EOF STUDENT CODE
